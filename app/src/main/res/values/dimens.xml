@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="new_movies_padding">50dp</dimen>
-
+    <dimen name="radio_button_padding">8dp</dimen>
+    <dimen name="radio_button_margin">4dp</dimen>
 
 </resources>
