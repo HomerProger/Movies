@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Movies</string>
+    <string name="now_in_cinema">Сейчас в кино</string>
+    <string name="new_movies">Название фильма </string>
+    <string name="date_of_premiere">Дата примьеры </string>
 </resources>
