@@ -1,4 +1,4 @@
-package com.example.movies.view
+package com.example.movies.view.adapters
 
 
 import android.view.LayoutInflater
@@ -10,19 +10,20 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.R
 import com.example.movies.model.Movie
+import com.example.movies.view.OnItemViewClickListener
 
 
-class UpcomingAdapter(var onItemViewClickListener: OnItemViewClickListener.OnItemViewClickListener?) :
+class UpcomingAdapter(var onItemViewClickListener: OnItemViewClickListener?) :
     RecyclerView.Adapter<UpcomingAdapter.UpcomingViewHolder>() {
 
-    private var movieData: Array<Movie> = arrayOf()
+    private var movieData: List<Movie> = listOf()
 
     fun removeListener() {
         onItemViewClickListener = null
     }
 
-    fun setMovie(array: Array<Movie>) {
-        movieData = array
+    fun setMovie(list: List<Movie>) {
+        movieData = list
         notifyDataSetChanged()
     }
 
@@ -37,22 +38,22 @@ class UpcomingAdapter(var onItemViewClickListener: OnItemViewClickListener.OnIte
         holder.init(movieData[position])
     }
 
-    override fun getItemCount(): Int {
-        return movieData.size
-    }
+    override fun getItemCount() = movieData.size
 
 
     inner class UpcomingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun init(movie: Movie) {
-            itemView.findViewById<TextView>(R.id.upcomingRecyclerItemTextView).text =
-                movie.movieNameRus
+            with(itemView) {
+                findViewById<TextView>(R.id.upcomingRecyclerItemTextView).text =
+                    movie.movieNameRus
 
-            itemView.findViewById<ImageView>(R.id.imageViewUpcoming).setImageDrawable(
-                ContextCompat.getDrawable(itemView.context, movie.poster)
-            )
-            itemView.findViewById<TextView>(R.id.upcomingRecyclerItemTextView2).text =
-                movie.yearOfMovie
-            itemView.setOnClickListener { onItemViewClickListener?.onItemViewClick(movie) }
+                findViewById<ImageView>(R.id.imageViewUpcoming).setImageDrawable(
+                    ContextCompat.getDrawable(itemView.context, movie.poster)
+                )
+                findViewById<TextView>(R.id.upcomingRecyclerItemTextView2).text =
+                    movie.yearOfMovie
+                setOnClickListener { onItemViewClickListener?.onItemViewClick(movie) }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.movies.view
+package com.example.movies.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,9 +22,8 @@ class DetailsFragment : Fragment() {
 
     var _binding: DetailsFragmentBinding? = null
     val binding: DetailsFragmentBinding
-        get() :DetailsFragmentBinding {
-            return _binding!!
-        }
+        get() :DetailsFragmentBinding = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,34 +36,28 @@ class DetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val movie = arguments?.getParcelable(KEY_MOVIE) as? Movie
-        if (movie != null)
-            setData(movie)
-
-    }
-
-    private fun setData(movie: Movie) {
-        binding.detailsNameRus.text = "${movie.movieNameRus} (${movie.yearOfMovie})"
-        binding.detailsNameEng.text = movie.movieNameEng
-        binding.jenre.text = movie.genres
-        binding.duration.text = "${movie.duration} мин"
-        binding.rating.text = "${movie.rating} (${movie.voteCount})"
-        binding.budjet.text = movie.budget
-        binding.dateOfPremiereRus.text = "Премьера в РФ ${movie.dateOfPremiereRus}"
-        binding.description.text = movie.description
-        binding.detailsPoster.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                movie.poster
-            )
-        )
-
-
+        arguments?.getParcelable<Movie>(KEY_MOVIE)?.apply {
+            with(binding) {
+                detailsNameRus.text = "${movieNameRus} (${yearOfMovie})"
+                detailsNameEng.text = this@apply.movieNameEng
+                jenre.text = genres
+                duration.text = "${this@apply.duration} мин"
+                rating.text = "${this@apply.rating} (${this@apply.voteCount})"
+                budjet.text = budget
+                dateOfPremiereRus.text = "Премьера в РФ ${this@apply.dateOfPremiereRus}"
+                description.text = this@apply.description
+                detailsPoster.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        poster
+                    )
+                )
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
 }

@@ -5,21 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.movies.R
 import com.example.movies.databinding.ActivityMainBinding
+import com.example.movies.view.fragments.NowPlayingFragment
+import com.example.movies.view.fragments.PopularFragment
+import com.example.movies.view.fragments.UpcomingFragment
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+  private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (savedInstanceState == null) {
+        savedInstanceState.let {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, NowPlayingFragment.newInstance()).commit()
         }
         binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
+
                 binding.now.id -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, NowPlayingFragment.newInstance()).commit()
