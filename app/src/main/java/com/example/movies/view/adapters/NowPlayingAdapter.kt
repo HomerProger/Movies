@@ -10,19 +10,21 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.R
 import com.example.movies.model.Movie
+import com.example.movies.model.MovieDTO
 import com.example.movies.view.OnItemViewClickListener
+import com.squareup.picasso.Picasso
 
 
 class NowPlayingAdapter(var onItemViewClickListener: OnItemViewClickListener?) :
     RecyclerView.Adapter<NowPlayingAdapter.NowViewHolder>() {
 
-    private var movieData: List<Movie> = listOf()
+    private var movieData: MutableList<MovieDTO> = mutableListOf()
 
     fun removeListener() {
         onItemViewClickListener = null
     }
 
-    fun setMovie(list: List<Movie>) {
+    fun setMovie(list: MutableList<MovieDTO>) {
         movieData = list
         notifyDataSetChanged()
     }
@@ -41,20 +43,21 @@ class NowPlayingAdapter(var onItemViewClickListener: OnItemViewClickListener?) :
     override fun getItemCount() = movieData.size
 
 
-
     inner class NowViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun init(movie: Movie) {
+        fun init(movieDTO: MovieDTO) {
             with(itemView) {
                 findViewById<TextView>(R.id.nowPlayingRecyclerItemTextView).text =
-                    movie.movieNameRus
+                    movieDTO.title
 
-                findViewById<ImageView>(R.id.imageViewNowPlaying).setImageDrawable(
-                    ContextCompat.getDrawable(itemView.context, movie.poster)
-                )
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/original${movieDTO.poster_path}")
+                    .into(findViewById<ImageView>(R.id.imageViewNowPlaying))
+
+
                 findViewById<TextView>(R.id.nowPlayingRecyclerItemTextView2).text =
-                    movie.yearOfMovie
+                    movieDTO.release_date
                 setOnClickListener {
-                    onItemViewClickListener?.onItemViewClick(movie)
+                    onItemViewClickListener?.onItemViewClick(movieDTO)
                 }
             }
         }

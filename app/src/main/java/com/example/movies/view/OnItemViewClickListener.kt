@@ -1,7 +1,7 @@
 package com.example.movies.view
 
-import com.example.movies.model.Movie
+import com.example.movies.model.MovieDTO
 
 interface OnItemViewClickListener {
-    fun onItemViewClick(movie: Movie)
+    fun onItemViewClick(movieDTO: MovieDTO)
 }

@@ -11,7 +11,7 @@ import com.example.movies.view.fragments.UpcomingFragment
 
 class MainActivity : AppCompatActivity() {
 
-  private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,27 +25,33 @@ class MainActivity : AppCompatActivity() {
 
                 binding.now.id -> {
                     supportFragmentManager.beginTransaction()
+                        .addToBackStack("")
                         .replace(R.id.fragment_container, NowPlayingFragment.newInstance()).commit()
                     binding.now.setOnClickListener {
                         supportFragmentManager.beginTransaction()
+                            .addToBackStack("")
                             .replace(R.id.fragment_container, NowPlayingFragment.newInstance())
                             .commit()
                     }
                 }
                 binding.upcoming.id -> {
                     supportFragmentManager.beginTransaction()
+                        .addToBackStack("")
                         .replace(R.id.fragment_container, UpcomingFragment.newInstance()).commit()
                     binding.upcoming.setOnClickListener {
                         supportFragmentManager.beginTransaction()
+                            .addToBackStack("")
                             .replace(R.id.fragment_container, UpcomingFragment.newInstance())
                             .commit()
                     }
                 }
                 binding.popular.id -> {
                     supportFragmentManager.beginTransaction()
+                        .addToBackStack("")
                         .replace(R.id.fragment_container, PopularFragment.newInstance()).commit()
                     binding.popular.setOnClickListener {
                         supportFragmentManager.beginTransaction()
+                            .addToBackStack("")
                             .replace(R.id.fragment_container, PopularFragment.newInstance())
                             .commit()
                     }

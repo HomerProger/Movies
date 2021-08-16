@@ -10,19 +10,21 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.R
 import com.example.movies.model.Movie
+import com.example.movies.model.MovieDTO
 import com.example.movies.view.OnItemViewClickListener
+import com.squareup.picasso.Picasso
 
 
 class UpcomingAdapter(var onItemViewClickListener: OnItemViewClickListener?) :
     RecyclerView.Adapter<UpcomingAdapter.UpcomingViewHolder>() {
 
-    private var movieData: List<Movie> = listOf()
+    private var movieData: MutableList<MovieDTO> = mutableListOf()
 
     fun removeListener() {
         onItemViewClickListener = null
     }
 
-    fun setMovie(list: List<Movie>) {
+    fun setMovie(list: MutableList<MovieDTO>) {
         movieData = list
         notifyDataSetChanged()
     }
@@ -42,17 +44,17 @@ class UpcomingAdapter(var onItemViewClickListener: OnItemViewClickListener?) :
 
 
     inner class UpcomingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun init(movie: Movie) {
+        fun init(movieDTO: MovieDTO) {
             with(itemView) {
                 findViewById<TextView>(R.id.upcomingRecyclerItemTextView).text =
-                    movie.movieNameRus
+                    movieDTO.title
 
-                findViewById<ImageView>(R.id.imageViewUpcoming).setImageDrawable(
-                    ContextCompat.getDrawable(itemView.context, movie.poster)
-                )
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/original${movieDTO.poster_path}")
+                    .into(findViewById<ImageView>(R.id.imageViewUpcoming))
                 findViewById<TextView>(R.id.upcomingRecyclerItemTextView2).text =
-                    movie.yearOfMovie
-                setOnClickListener { onItemViewClickListener?.onItemViewClick(movie) }
+                    movieDTO.release_date
+                setOnClickListener { onItemViewClickListener?.onItemViewClick(movieDTO) }
             }
         }
     }

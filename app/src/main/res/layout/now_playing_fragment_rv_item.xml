@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageViewNowPlaying"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,7 +19,6 @@
         android:id="@+id/nowPlayingRecyclerItemTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="6dp"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,11 +27,9 @@
         android:id="@+id/nowPlayingRecyclerItemTextView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nowPlayingRecyclerItemTextView"
-        android:text="2021"/>
+        app:layout_constraintTop_toBottomOf="@+id/nowPlayingRecyclerItemTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

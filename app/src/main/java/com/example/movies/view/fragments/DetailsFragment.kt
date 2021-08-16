@@ -1,13 +1,18 @@
 package com.example.movies.view.fragments
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.movies.databinding.DetailsFragmentBinding
-import com.example.movies.model.Movie
+import com.example.movies.model.MovieDTO
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Picasso.LoadedFrom
+import com.squareup.picasso.Target
 
 class DetailsFragment : Fragment() {
 
@@ -36,28 +41,40 @@ class DetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        arguments?.getParcelable<Movie>(KEY_MOVIE)?.apply {
+        arguments?.getParcelable<MovieDTO>(KEY_MOVIE)?.apply {
+            val length = 4
             with(binding) {
-                detailsNameRus.text = "${movieNameRus} (${yearOfMovie})"
-                detailsNameEng.text = this@apply.movieNameEng
-                jenre.text = genres
-                duration.text = "${this@apply.duration} мин"
-                rating.text = "${this@apply.rating} (${this@apply.voteCount})"
-                budjet.text = budget
-                dateOfPremiereRus.text = "Премьера в РФ ${this@apply.dateOfPremiereRus}"
-                description.text = this@apply.description
-                detailsPoster.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        poster
-                    )
-                )
+                detailsNameRus.text = "${title} (${release_date.subSequence(0, length)})"
+                detailsNameEng.text = original_title
+                rating.text = "Рейтинг ${vote_average} (${vote_count})"
+                dateOfPremiereRus.text = "Премьера в РФ ${release_date}"
+                description.text = overview
+//                TODO("Получить остальные данные и заполнить все поля в DetailsFragment")
             }
+            Picasso.get()
+                .load("https://image.tmdb.org/t/p/original${poster_path}")
+                .into(binding.detailsPoster)
+            Picasso.get().load("https://image.tmdb.org/t/p/original${poster_path}")
+                .into(object : Target {
+                    override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
+                        binding.root.background = BitmapDrawable(bitmap)
+                        binding.root.background.alpha = 20
+                    }
+
+                    override fun onBitmapFailed(e: Exception, errorDrawable: Drawable) {}
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+                })
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val nameOfFragment = arguments?.getString(KEY_MOVIE).toString()
+
     }
 }

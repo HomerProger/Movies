@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movies.R
 import com.example.movies.databinding.NowPlayingFragmentBinding
 import com.example.movies.model.Movie
+import com.example.movies.model.MovieDTO
+import com.example.movies.model.MovieListDTO
+import com.example.movies.view.MovieLoader
+import com.example.movies.view.MovieLoaderListener
 import com.example.movies.view.adapters.NowPlayingAdapter
 import com.example.movies.view.OnItemViewClickListener
 import com.example.movies.view.showSnackBar
@@ -17,14 +21,15 @@ import com.example.movies.viewmodel.AppState
 import com.example.movies.viewmodel.NowPlayingViewModel
 
 
-class NowPlayingFragment : Fragment() {
+class NowPlayingFragment : Fragment(), MovieLoaderListener {
+    private val THIS_FRAGMENT = "NOW"
     private var nowPlayingAdapter: NowPlayingAdapter = NowPlayingAdapter(object :
         OnItemViewClickListener {
-        override fun onItemViewClick(movie: Movie) {
+        override fun onItemViewClick(movieDTO: MovieDTO) {
             activity?.supportFragmentManager?.apply {
                 beginTransaction()
                     .replace(R.id.fragment_container, DetailsFragment.newInstance(Bundle().apply {
-                        putParcelable(DetailsFragment.KEY_MOVIE, movie)
+                        putParcelable(DetailsFragment.KEY_MOVIE, movieDTO)
                     }))
                     .addToBackStack("")
                     .commitAllowingStateLoss()
@@ -54,6 +59,7 @@ class NowPlayingFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
         viewModel.getNewMovies()
+        MovieLoader(this, THIS_FRAGMENT).loadMovie()
 
     }
 
@@ -64,7 +70,7 @@ class NowPlayingFragment : Fragment() {
     }
 
     private fun renderData(appState: AppState) {
-        when (appState) {
+       /* when (appState) {
             is AppState.Error -> TODO()
             is AppState.Success -> {
                 setData(appState)
@@ -72,19 +78,36 @@ class NowPlayingFragment : Fragment() {
             }
             AppState.Loading -> {
             }
-
         }
-
+        */
     }
 
     private fun setData(appState: AppState.Success) {
-        nowPlayingAdapter.setMovie(appState.dataMovies)
+       /* nowPlayingAdapter.setMovie(appState.dataMovies)
         with(binding) {
             recyclerViewNow.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             recyclerViewNow.adapter = nowPlayingAdapter
         }
+        */
+    }
 
+    override fun onLoaded(movieListDTO: MovieListDTO) {
+        val movieList: MutableList<MovieDTO> = mutableListOf()
+        for (i in movieListDTO.results) {
+            movieList.add(i)
+        }
+
+        nowPlayingAdapter.setMovie(movieList)
+        with(binding) {
+            recyclerViewNow.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerViewNow.adapter = nowPlayingAdapter
+        }
+    }
+
+    override fun onFailed(throwable: Throwable) {
+        TODO("Not yet implemented")
     }
 
 }
