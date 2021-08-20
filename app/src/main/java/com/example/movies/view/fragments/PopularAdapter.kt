@@ -1,4 +1,4 @@
-package com.example.movies.view.adapters
+package com.example.movies.view.fragments
 
 
 import android.view.LayoutInflater
@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.R
-import com.example.movies.model.Movie
 import com.example.movies.model.MovieDTO
 import com.example.movies.view.OnItemViewClickListener
 import com.squareup.picasso.Picasso
@@ -26,7 +24,7 @@ class PopularAdapter(var onItemViewClickListener: OnItemViewClickListener?) :
 
     fun setMovie(list: MutableList<MovieDTO>) {
         movieData = list
-        notifyDataSetChanged()
+        notifyItemChanged(itemCount)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularViewHolder {

@@ -4,11 +4,16 @@ package com.example.movies.model
 import android.os.Parcelable
 
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
+@Parcelize
 data class MovieListDTO(
-    var dates: Dates? = null, val page: Int, val results: Array<MovieDTO>,
-    val total_pages: Int, val total_results: Int
-)
+    var dates: @RawValue Dates? = null,
+    val page: @RawValue Int,
+    val results: @RawValue Array<MovieDTO>,
+    val total_pages: @RawValue Int,
+    val total_results: @RawValue Int
+) : Parcelable
 
 // Классы для построения DTO
 data class Dates(val maximum: String, val minimum: String)

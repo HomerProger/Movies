@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movies.model.Repository
 import com.example.movies.model.RepositoryImpl
-import java.lang.Thread.sleep
 
 class NowPlayingViewModel(
     private val liveDataObserver: MutableLiveData<AppState> = MutableLiveData(),

@@ -9,13 +9,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movies.R
 import com.example.movies.databinding.PopularFragmentBinding
-import com.example.movies.model.Movie
 import com.example.movies.model.MovieDTO
 import com.example.movies.model.MovieListDTO
 import com.example.movies.view.MovieLoader
 import com.example.movies.view.MovieLoaderListener
 import com.example.movies.view.OnItemViewClickListener
-import com.example.movies.view.adapters.PopularAdapter
 import com.example.movies.viewmodel.AppState
 import com.example.movies.viewmodel.PopularViewModel
 

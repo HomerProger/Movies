@@ -74,7 +74,7 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val nameOfFragment = arguments?.getString(KEY_MOVIE).toString()
+        arguments?.getString(KEY_MOVIE).toString()
 
     }
 }
