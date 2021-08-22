@@ -24,7 +24,6 @@ class NowPlayingAdapter(var onItemViewClickListener: OnItemViewClickListener?) :
 
     fun setMovie(list: MutableList<MovieDTO>) {
         movieData = list
-        notifyItemChanged(itemCount)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowViewHolder {
