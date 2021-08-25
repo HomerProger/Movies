@@ -5,21 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movies.R
 import com.example.movies.databinding.UpcomingFragmentBinding
 import com.example.movies.model.MovieDTO
-import com.example.movies.model.MovieListDTO
-import com.example.movies.view.MovieLoader
-import com.example.movies.view.MovieLoaderListener
 import com.example.movies.view.OnItemViewClickListener
 import com.example.movies.viewmodel.AppState
 import com.example.movies.viewmodel.UpcomingViewModel
 
 
-class UpcomingFragment : Fragment(), MovieLoaderListener {
-    private val THIS_FRAGMENT = "UPCOMING"
+class UpcomingFragment : Fragment() {
     private var upcomingAdapter: UpcomingAdapter = UpcomingAdapter(object :
         OnItemViewClickListener {
         override fun onItemViewClick(movieDTO: MovieDTO) {
@@ -57,12 +54,10 @@ class UpcomingFragment : Fragment(), MovieLoaderListener {
         _binding = UpcomingFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
-        viewModel.getNewMovies()
-        MovieLoader(this, THIS_FRAGMENT).loadMovie()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+        viewModel.getUpcomingMovieListFromRemoteSource()
     }
 
     override fun onDestroy() {
@@ -72,45 +67,23 @@ class UpcomingFragment : Fragment(), MovieLoaderListener {
     }
 
     private fun renderData(appState: AppState) {
-           /*
             when (appState) {
                 is AppState.Error -> TODO()
                 is AppState.Success -> {
                     setData(appState)
-                    binding.root.showSnackBar(R.string.snackbar_text)
                 }
                 AppState.Loading -> {
                 }
             }
-            */
     }
 
     private fun setData(appState: AppState.Success) {
-        /*
-            UpcomingAdapter.setMovie(appState.dataMovies)
+            upcomingAdapter.setMovie(appState.dataMovies)
             with(binding){
                 recyclerViewUpcoming.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                recyclerViewUpcoming.adapter = UpcomingAdapter
+                recyclerViewUpcoming.adapter = upcomingAdapter
             }
-         */
     }
 
-    override fun onLoaded(movieListDTO: MovieListDTO) {
-        val movieList: MutableList<MovieDTO> = mutableListOf()
-        for (i in movieListDTO.results) {
-            movieList.add(i)
-        }
-
-        upcomingAdapter.setMovie(movieList)
-        with(binding) {
-            recyclerViewUpcoming.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerViewUpcoming.adapter = upcomingAdapter
-        }
-    }
-
-    override fun onFailed(throwable: Throwable) {
-        TODO("Not yet implemented")
-    }
 }

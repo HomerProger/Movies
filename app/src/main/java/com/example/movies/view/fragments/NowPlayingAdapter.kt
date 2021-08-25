@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.movies.R
 import com.example.movies.model.MovieDTO
 import com.example.movies.view.OnItemViewClickListener
@@ -46,10 +47,9 @@ class NowPlayingAdapter(var onItemViewClickListener: OnItemViewClickListener?) :
                 findViewById<TextView>(R.id.nowPlayingRecyclerItemTextView).text =
                     movieDTO.title
 
-                Picasso.get()
+                Glide.with(findViewById<ImageView>(R.id.imageViewNowPlaying))
                     .load("https://image.tmdb.org/t/p/original${movieDTO.poster_path}")
                     .into(findViewById<ImageView>(R.id.imageViewNowPlaying))
-
 
                 findViewById<TextView>(R.id.nowPlayingRecyclerItemTextView2).text =
                     movieDTO.release_date

@@ -5,21 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movies.R
 import com.example.movies.databinding.PopularFragmentBinding
 import com.example.movies.model.MovieDTO
-import com.example.movies.model.MovieListDTO
-import com.example.movies.view.MovieLoader
-import com.example.movies.view.MovieLoaderListener
 import com.example.movies.view.OnItemViewClickListener
 import com.example.movies.viewmodel.AppState
 import com.example.movies.viewmodel.PopularViewModel
 
 
-class PopularFragment : Fragment(), MovieLoaderListener {
-    private val THIS_FRAGMENT = "POPULAR"
+class PopularFragment : Fragment() {
     private var popularAdapter: PopularAdapter = PopularAdapter(object :
         OnItemViewClickListener {
         override fun onItemViewClick(movieDTO: MovieDTO) {
@@ -49,17 +46,14 @@ class PopularFragment : Fragment(), MovieLoaderListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = PopularFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
-        viewModel.getNewMovies()
-        MovieLoader(this, THIS_FRAGMENT).loadMovie()
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+        viewModel.getPopularMovieListFromRemoteSource()
     }
 
     override fun onDestroy() {
@@ -69,7 +63,7 @@ class PopularFragment : Fragment(), MovieLoaderListener {
     }
 
     private fun renderData(appState: AppState) {
-        /* when (appState) {
+        when (appState) {
              is AppState.Error -> TODO()
              is AppState.Success -> {
                  setData(appState)
@@ -77,34 +71,14 @@ class PopularFragment : Fragment(), MovieLoaderListener {
              AppState.Loading -> {
              }
          }
-         */
     }
 
     private fun setData(appState: AppState.Success) {
-        /*   popularAdapter.setMovie(appState.dataMovies)
+           popularAdapter.setMovie(appState.dataMovies)
            with(binding) {
                recyclerViewPopular.layoutManager =
                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                recyclerViewPopular.adapter = popularAdapter
            }
-                 */
-    }
-
-    override fun onLoaded(movieListDTO: MovieListDTO) {
-        val movieList: MutableList<MovieDTO> = mutableListOf()
-        for (i in movieListDTO.results) {
-            movieList.add(i)
-        }
-
-        popularAdapter.setMovie(movieList)
-        with(binding) {
-            recyclerViewPopular.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerViewPopular.adapter = popularAdapter
-        }
-    }
-
-    override fun onFailed(throwable: Throwable) {
-        TODO("Not yet implemented")
     }
 }
