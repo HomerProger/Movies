@@ -6,4 +6,8 @@
     <string name="soon_movie">Скоро в кино</string>
     <string name="popular_movies">Популярные фильмы</string>
     <string name="snackbar_text">Данные получены UpcomingFragment</string>
+    <string name="settings">Настройки</string>
+    <string name="adult_content">Взрослый контент исключен</string>
+    <string name="on_adult_content">Взрослый контент включен</string>
+    <string name="history">История просмотров</string>
 </resources>

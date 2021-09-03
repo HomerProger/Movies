@@ -13,12 +13,12 @@ import android.net.NetworkInfo
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.app.NotificationCompat
 import com.example.movies.R
 import com.example.movies.databinding.ActivityMainBinding
-import com.example.movies.view.fragments.NowPlayingFragment
-import com.example.movies.view.fragments.PopularFragment
-import com.example.movies.view.fragments.UpcomingFragment
+import com.example.movies.view.fragments.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -101,6 +101,27 @@ class MainActivity : AppCompatActivity() {
             val importance = NotificationManager.IMPORTANCE_LOW
             val channel =  NotificationChannel("2", "name", importance)
             notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.settings->{
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, SettingsFragment.newInstance()).commit()
+                true
+            }
+            R.id.history->{
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, HistoryFragment.newInstance()).commit()
+                true
+            }
+            else ->super.onOptionsItemSelected(item)
         }
     }
 }

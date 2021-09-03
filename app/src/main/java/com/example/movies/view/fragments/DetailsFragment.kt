@@ -3,6 +3,7 @@ package com.example.movies.view.fragments
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.movies.databinding.DetailsFragmentBinding
 import com.example.movies.model.MovieDTO
 import com.example.movies.model.MovieDetailsDTO
+import com.example.movies.room.HistoryEntity
 import com.example.movies.viewmodel.AppState
 import com.example.movies.viewmodel.DetailsViewModel
 import com.squareup.picasso.Picasso
@@ -29,6 +31,7 @@ class DetailsFragment : Fragment() {
             return fragment
         }
     }
+
     val viewModel: DetailsViewModel by lazy { ViewModelProvider(this).get(DetailsViewModel::class.java) }
     var _binding: DetailsFragmentBinding? = null
     val binding: DetailsFragmentBinding
@@ -57,6 +60,7 @@ class DetailsFragment : Fragment() {
             viewModel.getMovieDetailsFromRemoteSource(it.toInt())
         }
     }
+
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.SuccessDetails -> setData(appState)
@@ -66,11 +70,14 @@ class DetailsFragment : Fragment() {
     private fun setData(appState: AppState.SuccessDetails) {
         val movieDetails: MovieDetailsDTO = appState.dataDetails
         val length = 4
+        val makeEntryDB = MakeEntryDB(this)
+        makeEntryDB.execute(movieDetails)
         with(binding) {
-            detailsNameRus.text = "${movieDetails.title} (${movieDetails.release_date.subSequence(0, length)})"
+            detailsNameRus.text =
+                "${movieDetails.title} (${movieDetails.release_date.subSequence(0, length)})"
             detailsNameEng.text = movieDetails.original_title
             jenre.text = getGenres(movieDetails)
-            duration.text ="${movieDetails.runtime} мин"
+            duration.text = "${movieDetails.runtime} мин"
             budjet.text = "Бюджет $${movieDetails.budget}"
             rating.text = "Рейтинг ${movieDetails.vote_average} (${movieDetails.vote_count})"
             dateOfPremiereRus.text = "Премьера  ${movieDetails.release_date}"
@@ -90,11 +97,23 @@ class DetailsFragment : Fragment() {
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
             })
     }
-    fun getGenres(movieDetails: MovieDetailsDTO):String{
-        var genres: String=""
-        for(i in movieDetails.genres){
+
+    private fun getGenres(movieDetails: MovieDetailsDTO): String {
+        var genres = ""
+        for (i in movieDetails.genres) {
             genres = "${genres}${i.name}, "
         }
-        return genres.substring(0,genres.length-2)
+        return genres.substring(0, genres.length - 2)
+    }
+
+}
+
+internal class MakeEntryDB(detailsFragment: DetailsFragment) :
+    AsyncTask<MovieDetailsDTO?, Unit?, Unit?>() {
+    val viewModel: DetailsViewModel =
+        ViewModelProvider(detailsFragment).get(DetailsViewModel::class.java)
+
+    override fun doInBackground(vararg movieDetails: MovieDetailsDTO?) {
+        movieDetails[0]?.let { viewModel.saveMovieToDb(it) }
     }
 }

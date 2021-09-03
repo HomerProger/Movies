@@ -1,5 +1,7 @@
 package com.example.movies.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movies.model.MovieListDTO
@@ -13,7 +15,7 @@ import retrofit2.Response
 
 class NowPlayingViewModel(
     private val liveDataObserver: MutableLiveData<AppState> = MutableLiveData(),
-    val serverRepository: ServerRepository = ServerRepositoryImpl(RemoteDataSource())
+    private val serverRepository: ServerRepository = ServerRepositoryImpl(RemoteDataSource()),
 ) : ViewModel() {
 
     fun getLiveData() = liveDataObserver

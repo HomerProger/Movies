@@ -1,5 +1,6 @@
 package com.example.movies.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movies.R
 import com.example.movies.databinding.UpcomingFragmentBinding
+import com.example.movies.model.ADULT
 import com.example.movies.model.MovieDTO
 import com.example.movies.view.OnItemViewClickListener
 import com.example.movies.viewmodel.AppState
@@ -78,12 +80,28 @@ class UpcomingFragment : Fragment() {
     }
 
     private fun setData(appState: AppState.Success) {
-            upcomingAdapter.setMovie(appState.dataMovies)
+            upcomingAdapter.setMovie(checkAdultContent(appState.dataMovies))
             with(binding){
                 recyclerViewUpcoming.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 recyclerViewUpcoming.adapter = upcomingAdapter
             }
+    }
+
+    private fun checkAdultContent(dataMovies: MutableList<MovieDTO>): MutableList<MovieDTO> {
+        val movieList: MutableList<MovieDTO> = mutableListOf()
+        val sharedPref = context?.getSharedPreferences(ADULT, Context.MODE_PRIVATE)
+        val adultContent: Boolean = sharedPref?.getBoolean(ADULT, true)!!
+
+        for (i in dataMovies) {
+            if (adultContent) {
+                movieList.add(i)
+            } else {
+                if (i.adult) continue
+                else movieList.add(i)
+            }
+        }
+        return movieList
     }
 
 }

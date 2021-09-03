@@ -3,22 +3,26 @@ package com.example.movies.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movies.app.App
+import com.example.movies.model.MovieDTO
 import com.example.movies.model.MovieDetailsDTO
-import com.example.movies.model.repository.RemoteDataSource
-import com.example.movies.model.repository.ServerRepository
-import com.example.movies.model.repository.ServerRepositoryImpl
+import com.example.movies.model.repository.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class DetailsViewModel(
     private val liveDataObserver: MutableLiveData<AppState> = MutableLiveData(),
-    private val serverRepository: ServerRepository = ServerRepositoryImpl(RemoteDataSource())
+    private val serverRepository: ServerRepository = ServerRepositoryImpl(RemoteDataSource()),
+    private val historyRepository: HistoryRepositoryImpl = HistoryRepositoryImpl(App.getHistoryDao())
 ) : ViewModel() {
 
     fun getLiveData() = liveDataObserver
     fun getMovieDetailsFromRemoteSource(movieId: Int){
         serverRepository.getMovieDetails(movieId, callBack)
+    }
+    fun saveMovieToDb(movieDetails: MovieDetailsDTO){
+        historyRepository.saveEntity(movieDetails)
     }
 
     private val callBack = object : Callback<MovieDetailsDTO> {

@@ -4,6 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/mihai/AndroidStudioProjects/Movies/app/src/main/res/layout/details_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/mihai/AndroidStudioProjects/Movies/app/src/main/res/layout/history_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/mihai/AndroidStudioProjects/Movies/app/src/main/res/layout/history_fragment_rv_item.xml" value="0.536" />
+        <entry key="..\:/Users/mihai/AndroidStudioProjects/Movies/app/src/main/res/layout/now_playing_fragment_rv_item.xml" value="0.1328125" />
+        <entry key="..\:/Users/mihai/AndroidStudioProjects/Movies/app/src/main/res/layout/settings_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/mihai/AndroidStudioProjects/Movies/app/src/main/res/menu/main_menu.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
